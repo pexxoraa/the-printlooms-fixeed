@@ -18,8 +18,8 @@ import { products } from '../services/products.js';
 import { storage } from '../services/storage.js';
 import { api } from '../services/api.js';
 
-// Resolve repo base path for subfolder hosting on GitHub Pages
-const BASE_PATH = window.location.pathname.includes('/theprintlooms') ? '/theprintlooms' : '';
+// Resolve repo base path for subfolder hosting on GitHub Pages (matching repository name)
+const BASE_PATH = window.location.pathname.includes('/the-printlooms-fixeed') ? '/the-printlooms-fixeed' : '';
 
 function resolveImagePath(path) {
   if (!path) return '';
