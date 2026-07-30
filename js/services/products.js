@@ -21,19 +21,31 @@ async function loadCatalog() {
 
 async function loadCategories() {
   if (_categories) return _categories;
-  try {
-    const categoriesUrl = CONFIG?.DATA?.categories || resolvePath('data/categories.json');
-    const res = await fetch(categoriesUrl);
-    if (!res.ok) throw new Error(`HTTP error ${res.status} at ${categoriesUrl}`);
-    const json = await res.json();
-    
-    // Safely support both direct arrays and object wrappers (e.g. { categories: [...] })
-    _categories = Array.isArray(json) ? json : (json.categories || []);
-    return _categories;
-  } catch (err) {
-    console.error('Error loading categories:', err);
-    return [];
+  
+  // Try multiple fallback paths to ensure it resolves on GitHub Pages subfolders and local dev
+  const pathsToTry = [
+    CONFIG?.DATA?.categories,
+    resolvePath('data/categories.json'),
+    '/the-printlooms-fixeed/data/categories.json',
+    './data/categories.json',
+    'data/categories.json'
+  ].filter(Boolean);
+
+  for (const categoriesUrl of pathsToTry) {
+    try {
+      const res = await fetch(categoriesUrl);
+      if (res.ok) {
+        const json = await res.json();
+        _categories = Array.isArray(json) ? json : (json.categories || []);
+        if (_categories.length > 0) return _categories;
+      }
+    } catch (err) {
+      // Continue to next fallback path
+    }
   }
+
+  console.error('Error loading categories: All fallback paths failed.');
+  return [];
 }
 
 export const products = {
