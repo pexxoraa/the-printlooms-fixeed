@@ -2,9 +2,9 @@
   "products": [
     {
       "id": "p001", "name": "Sea Green Lotus Print Saree", "slug": "sea-green-lotus-print-saree",
-      "category": "cat-organza", "price": 1, "discount": 0,
+      "category": "cat-organza", "price": 2499, "discount": 0,
       "images": ["assets/images/products/mint-lotus-saree-1.jpg"],
-      "fabric": "Digital Print Linen", "sizes": ["Free Size"], "stock": 0, "featured": true,
+      "fabric": "Digital Print Linen", "sizes": ["Free Size"], "stock": 10, "featured": true,
       "tags": ["bestseller","festive"], "rating": 4.7,
       "description": "A soft sea-green saree with a hand-painted lotus print scattered across the drape, paired with a rich maroon pallu dotted with delicate lotus buds and a matching maroon blouse."
     },
@@ -26,7 +26,7 @@
     },
     {
       "id": "p004", "name": "Mustard & Blush Floral Saree", "slug": "mustard-blush-floral-saree",
-      "category": "cat-cotton", "price": 1999, "discount": 10,
+      "category": "cat-cotton", "price": 2899, "discount": 10,
       "images": ["assets/images/products/mustard-blush-floral-saree.jpg"],
       "fabric": "Digital Print Cotton", "sizes": ["Free Size"], "stock": 26, "featured": false,
       "tags": ["everyday"], "rating": 4.3,
@@ -58,7 +58,7 @@
     },
     {
       "id": "p008", "name": "Red Lotus Pinstripe Saree", "slug": "red-lotus-pinstripe-saree",
-      "category": "cat-silk", "price": 2999, "discount": 15,
+      "category": "cat-silk", "price": 2699, "discount": 15,
       "images": ["assets/images/products/red-blue-lotus-saree.jpg"],
       "fabric": "Digital Print Silk", "sizes": ["Free Size"], "stock": 16, "featured": true,
       "tags": ["bestseller","festive"], "rating": 4.8,
@@ -74,7 +74,7 @@
     },
     {
       "id": "p010", "name": "Sunshine Blossom Saree", "slug": "sunshine-blossom-saree",
-      "category": "cat-linen", "price": 1899, "discount": 5,
+      "category": "cat-linen", "price": 2899, "discount": 5,
       "images": ["assets/images/products/yellow-teal-blossom-saree.jpg"],
       "fabric": "Digital Print Linen", "sizes": ["Free Size"], "stock": 28, "featured": false,
       "tags": ["everyday","new-arrival"], "rating": 4.1,
@@ -90,7 +90,7 @@
     },
     {
       "id": "p012", "name": "Magenta Lotus Bridal Saree", "slug": "magenta-lotus-bridal-saree",
-      "category": "cat-bridal", "price": 4499, "discount": 20,
+      "category": "cat-bridal", "price": 4499, "discount": 30,
       "images": ["assets/images/products/magenta-cream-lotus-saree.jpg"],
       "fabric": "Digital Print Silk", "sizes": ["Free Size"], "stock": 9, "featured": true,
       "tags": ["bridal","bestseller"], "rating": 4.9,
@@ -98,7 +98,7 @@
     },
     {
       "id": "p013", "name": "Ombre Vine Saree", "slug": "ombre-vine-saree",
-      "category": "cat-georgette", "price": 2199, "discount": 8,
+      "category": "cat-georgette", "price": 2199, "discount": 18,
       "images": ["assets/images/products/yellow-teal-ombre-floral-saree.jpg"],
       "fabric": "Digital Print Georgette", "sizes": ["Free Size"], "stock": 15, "featured": false,
       "tags": ["trending"], "rating": 4.3,
@@ -106,7 +106,7 @@
     },
     {
       "id": "p014", "name": "Scarlet Lotus Pond Saree", "slug": "scarlet-lotus-pond-saree",
-      "category": "cat-organza", "price": 2599, "discount": 0,
+      "category": "cat-organza", "price": 2599, "discount": 3,
       "images": ["assets/images/products/red-green-lotus-saree.jpg"],
       "fabric": "Digital Print Linen", "sizes": ["Free Size"], "stock": 12, "featured": false,
       "tags": ["new-arrival"], "rating": 4.2,
