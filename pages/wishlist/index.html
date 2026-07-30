@@ -9,16 +9,16 @@
 <script>
   // Compute the correct <base> dynamically so the site works when served
   // from the domain root (local dev server, custom domain) AND when served
-  // from a GitHub Pages *project* subfolder (username.github.io/theprintlooms/).
+  // from a GitHub Pages *project* subfolder.
   (function () {
     var path = window.location.pathname;
-    var base = /^\/theprintlooms(\/|$)/.test(path) ? '/theprintlooms/' : '/';
+    var base = /^\/the-printlooms-fixeed(\/|$)/.test(path) ? '/the-printlooms-fixeed/' : '/';
     document.write('<base href="' + base + '">');
   })();
 </script>
 
 <meta name="description" content="Your saved sarees at The Print Loom.">
-<link rel="canonical" href="https://theprintloom.example.com/pages/wishlist/index.html">
+<link rel="canonical" href="https://pexxoraa.github.io/the-printlooms-fixeed/pages/wishlist/index.html">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
