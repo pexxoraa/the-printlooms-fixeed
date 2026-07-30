@@ -3,37 +3,13 @@
  * ============================================================================
  * THE PRINT LOOM — Google Apps Script Backend
  * ============================================================================
- * NO PAYMENT GATEWAY. Customers pay you directly via UPI (any app — Google
- * Pay, PhonePe, Paytm, BHIM, etc.) using the UPI ID configured in
- * js/services/config.js. There is no Razorpay/Cashfree/etc. and therefore no
- * per-transaction gateway fee — but also no automatic payment confirmation.
- * Every order lands here with a customer-entered UPI reference/UTR number
- * and a "Pending Verification" status; you confirm it yourself by checking
- * that reference number against your bank/UPI statement, then update the
- * "Payment Status" cell in the Orders sheet to "Verified" once confirmed.
- *
- * Deploy this as a Web App (Deploy > New deployment > Web app):
- *   - Execute as: Me
- *   - Who has access: Anyone
- * Copy the resulting /exec URL into js/services/config.js -> CONFIG.API.gasBaseUrl
- *
- * Required Script Properties (Project Settings > Script Properties):
- *   SPREADSHEET_ID         - ID of the Google Sheet used as the order database
- *   WHATSAPP_PHONE_ID      - Meta WhatsApp Cloud API phone_number_id
- *   WHATSAPP_ACCESS_TOKEN  - Meta WhatsApp Cloud API permanent access token
- *   WHATSAPP_TO_NUMBER     - Business WhatsApp number to notify (E.164, no +)
- *
- * Required Sheet: a tab named "Orders" with header row matching ORDER_HEADERS
- * below (row 1). A "Newsletter" tab and "Messages" tab are auto-created if
- * missing.
- * ============================================================================
  */
 
 const ORDER_HEADERS = [
   'Order ID', 'Date', 'Time', 'Customer Name', 'Phone', 'Email', 'Address',
-  'City', 'State', 'Pincode', 'Order Notes', 'Products', 'Quantity', 'Subtotal',
-  'Shipping Charges', 'Discount', 'Grand Total', 'Payment Method',
-  'UPI Reference', 'Payment Status', 'Order Status',
+  'City', 'State', 'Pincode', 'Products', 'Quantity', 'Subtotal',
+  'Shipping Charge', 'Discount', 'Grand Total', 'Payment Method',
+  'UPI Reference', 'Payment Status', 'Order Status', 'Order Notes'
 ];
 
 /* ------------------------------------------------------------------------ */
@@ -113,7 +89,6 @@ function getOrCreateSheet_(name, headers) {
   if (!sheet) {
     sheet = ss.insertSheet(name);
     sheet.appendRow(headers);
-    // Make the header row bold
     sheet.getRange(1, 1, 1, headers.length).setFontWeight('bold');
   }
   return sheet;
@@ -123,12 +98,6 @@ function getOrdersSheet_() {
   return getOrCreateSheet_('Orders', ORDER_HEADERS);
 }
 
-/**
- * Products are optionally mirrored into a "Products" sheet so non-technical
- * staff can update stock/pricing without touching data/products.json. If no
- * such sheet exists, the frontend's api.js already falls back to the local
- * /data/products.json file, so this endpoint is optional.
- */
 function getProductsFromSheet_() {
   const ss = getSpreadsheet_();
   const sheet = ss.getSheetByName('Products');
@@ -161,7 +130,7 @@ function generateOrderId_() {
   const lock = LockService.getScriptLock();
   lock.waitLock(10000); // wait up to 10s so two simultaneous checkouts don't collide
   try {
-    const lastRow = sheet.getLastRow(); // includes header row
+    const lastRow = sheet.getLastRow(); 
     const seq = String(lastRow).padStart(4, '0');
     const today = Utilities.formatDate(new Date(), Session.getScriptTimeZone() || 'Asia/Kolkata', 'yyyyMMdd');
     return `PL-${today}-${seq}`;
@@ -182,7 +151,7 @@ function appendOrderRow_(orderDraft, orderId) {
     .join(', ');
   const totalQty = orderDraft.items.reduce((s, i) => s + i.quantity, 0);
 
-  // Ensure this exact order perfectly matches ORDER_HEADERS array above
+  // Exact matching mapping so columns don't shift!
   sheet.appendRow([
     orderId,
     Utilities.formatDate(now, Session.getScriptTimeZone() || 'Asia/Kolkata', 'yyyy-MM-dd'),
@@ -194,30 +163,22 @@ function appendOrderRow_(orderDraft, orderId) {
     orderDraft.customer.city || '',
     orderDraft.customer.state || '',
     orderDraft.customer.pincode || '',
-    orderDraft.customer.notes || '', // Properly maps to 'Order Notes'
-    productsSummary,
-    totalQty,
-    orderDraft.subtotal || 0,
-    orderDraft.shipping || 0,
-    orderDraft.discount || 0,
-    orderDraft.grandTotal || 0,
+    productsSummary,            // Col K (11)
+    totalQty,                   // Col L (12)
+    orderDraft.subtotal || 0,   // Col M (13)
+    orderDraft.shipping || 0,   // Col N (14)
+    orderDraft.discount || 0,   // Col O (15)
+    orderDraft.grandTotal || 0, // Col P (16)
     'UPI (Direct)',
     orderDraft.upiReference || '',
     'Pending Verification',
     'Placed',
+    orderDraft.customer.notes || '' // Moved safely to the end
   ]);
 
   return orderId;
 }
 
-/**
- * Saves an order paid via direct UPI transfer. Since there is no payment
- * gateway, this cannot verify that the money actually arrived — it only
- * records what the customer entered. Check the "UPI Reference" column
- * against your bank/UPI statement, then change "Payment Status" to
- * "Verified" (and "Order Status" to whatever fits your fulfilment workflow)
- * once confirmed.
- */
 function saveUpiOrder_(orderDraft) {
   const orderId = generateOrderId_();
   appendOrderRow_(orderDraft, orderId);
@@ -235,7 +196,7 @@ function sendWhatsAppNotification_(orderDraft, orderId) {
     const phoneId = props.getProperty('WHATSAPP_PHONE_ID');
     const token = props.getProperty('WHATSAPP_ACCESS_TOKEN');
     const toNumber = props.getProperty('WHATSAPP_TO_NUMBER');
-    if (!phoneId || !token || !toNumber) return; // Not configured yet — skip silently.
+    if (!phoneId || !token || !toNumber) return; 
 
     const productsSummary = orderDraft.items
       .map((i) => `• ${i.name} (${i.size}) x${i.quantity}`)
@@ -271,7 +232,6 @@ function sendWhatsAppNotification_(orderDraft, orderId) {
       muteHttpExceptions: true,
     });
   } catch (err) {
-    // Never let a notification failure block order confirmation.
     console.error('WhatsApp notification failed: ' + err.message);
   }
 }
