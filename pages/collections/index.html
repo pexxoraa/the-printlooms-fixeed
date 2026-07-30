@@ -9,10 +9,10 @@
 <script>
   // Compute the correct <base> dynamically so the site works when served
   // from the domain root (local dev server, custom domain) AND when served
-  // from a GitHub Pages *project* subfolder (username.github.io/theprintlooms/).
+  // from a GitHub Pages *project* subfolder.
   (function () {
     var path = window.location.pathname;
-    var base = /^\/theprintlooms(\/|$)/.test(path) ? '/theprintlooms/' : '/';
+    var base = /^\/the-printlooms-fixeed(\/|$)/.test(path) ? '/the-printlooms-fixeed/' : '/';
     document.write('<base href="' + base + '">');
   })();
 </script>
@@ -88,7 +88,7 @@
 <div id="site-footer"></div>
 
 <script type="module">
-  // All imports prefixed with ./ to satisfy ES Module relative path requirements
+  // All imports prefixed with ./ to satisfy ES Module relative path requirements, leveraging the <base> tag
   import { initApp } from './js/app.js';
   import { router } from './js/router.js';
   import { products } from './js/services/products.js';
@@ -212,7 +212,7 @@
       if (cat) {
         state.categories = [cat.id]; // Set actual category ID for filtering
         document.getElementById('listing-title').textContent = cat.name;
-        document.getElementById('listing-subtitle').textContent = cat.description;
+        document.getElementById('listing-subtitle').textContent = cat.description || 'Browse our curated selection.';
         document.getElementById('breadcrumb-current').textContent = cat.name;
       }
     }
