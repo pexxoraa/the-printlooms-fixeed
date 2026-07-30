@@ -303,23 +303,34 @@
   }
 
   async function loadCategoryStrip() {
-    const cats = await products.categories();
-    const container = document.getElementById('category-strip');
-    if (!container) return;
-    
-    container.innerHTML = cats.map((c) => {
-      let imgPath = c.image ? c.image.replace(/^(\.\/|\/)+/, '') : '';
-      if (imgPath.startsWith('the-printlooms-fixeed/')) {
-        imgPath = imgPath.replace(/^the-printlooms-fixeed\//, '');
+    try {
+      const cats = await products.categories();
+      const container = document.getElementById('category-strip');
+      if (!container) return;
+      
+      if (!cats || cats.length === 0) {
+        container.innerHTML = '<p class="text-faint text-center">Loading categories...</p>';
+        return;
       }
 
-      return `
-        <a href="pages/collections/index.html?category=${c.id}" class="category-chip">
-          <div class="category-chip__media"><img src="${imgPath}" alt="${c.name}"></div>
-          <span style="font-size:0.9rem;font-weight:600;">${c.name}</span>
-        </a>
-      `;
-    }).join('');
+      container.innerHTML = cats.map((c) => {
+        let imgPath = c.image ? c.image.replace(/^(\.\/|\/)+/, '') : '';
+        if (imgPath.startsWith('the-printlooms-fixeed/')) {
+          imgPath = imgPath.replace(/^the-printlooms-fixeed\//, '');
+        }
+
+        return `
+          <a href="pages/collections/index.html?category=${c.id || c.slug || ''}" class="category-chip">
+            <div class="category-chip__media">
+              <img src="${imgPath}" alt="${c.name || 'Category'}">
+            </div>
+            <span style="font-size:0.9rem;font-weight:600;">${c.name || 'Collection'}</span>
+          </a>
+        `;
+      }).join('');
+    } catch (err) {
+      console.error('Failed to load category strip:', err);
+    }
   }
 
   function wireFaq() {
