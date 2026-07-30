@@ -10,9 +10,6 @@
 
 <!-- Base URL for GitHub Pages subfolder routing -->
 <script>
-  // Compute the correct <base> dynamically so the site works when served
-  // from the domain root (local dev server, custom domain) AND when served
-  // from a GitHub Pages *project* subfolder.
   (function () {
     var path = window.location.pathname;
     var base = /^\/the-printlooms-fixeed(\/|$)/.test(path) ? '/the-printlooms-fixeed/' : '/';
@@ -172,6 +169,9 @@
   import { validators } from './js/services/validation.js';
   import { showToast } from './js/components/toast.js';
   import { router } from './js/router.js';
+  
+  // NEW: Import the products module so we can reduce stock!
+  import { products } from './js/services/products.js';
 
   let currentTotals = null;
   let clientRef = null;
@@ -200,7 +200,6 @@
     document.getElementById('upi-ref-note').textContent = clientRef;
   }
 
-  /** Render the cart line items + totals in the order summary panel. */
   async function renderSummary() {
     const lines = await cart.hydrate();
     const container = document.getElementById('checkout-lines');
@@ -274,7 +273,6 @@
     if (totals && totals.grandTotal > 0) updatePaymentUpiDetails(totals.grandTotal);
   }
 
-  /** Show a validation error message next to a field, or clear it. */
   function setFieldError(fieldId, message) {
     const errEl = document.querySelector(`[data-error-for="${fieldId}"]`);
     if (errEl) errEl.textContent = message || '';
@@ -369,7 +367,12 @@
 
       try {
         const orderDraft = await checkout.buildOrderDraft(customerDetails);
+        
+        // Push order to Google Sheets
         const result = await payment.payWithUpi(orderDraft, upiRef);
+
+        // NEW: Deduct the stock of the purchased items instantly!
+        products.reduceStock(orderDraft.items);
 
         await cart.clear();
         checkout.clearDraft();
@@ -393,16 +396,11 @@
       }
     });
 
-    try {
-      await initApp();
-    } catch (e) {
-      console.warn('App init failed', e);
-    }
+    try { await initApp(); } catch (e) { console.warn('App init failed', e); }
 
     document.getElementById('breadcrumb-home').setAttribute('href', CONFIG.ROUTES.home);
     document.getElementById('breadcrumb-cart').setAttribute('href', CONFIG.ROUTES.cart);
 
-    // Pre-fill any previously saved checkout draft (e.g. after a page refresh).
     const draft = checkout.getDraft();
     Object.entries(draft).forEach(([key, value]) => {
       const el = document.getElementById(`cf-${key}`);
