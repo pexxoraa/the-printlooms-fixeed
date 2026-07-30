@@ -9,20 +9,40 @@ let _cache = null;
 let _categories = null;
 
 async function loadCatalog() {
-  if (_cache) return _cache;
-  try {
-    _cache = await api.getProducts();
-    return _cache || [];
-  } catch (err) {
-    console.error('Error loading catalog:', err);
-    return [];
+  // Only fetch from the API/JSON once
+  if (!_cache) {
+    try {
+      _cache = await api.getProducts();
+      if (!_cache) _cache = [];
+    } catch (err) {
+      console.error('Error loading catalog:', err);
+      _cache = [];
+    }
   }
+
+  // INTERCEPTOR: Dynamically reduce stock based on local purchases
+  return _cache.map(p => {
+    const deductKey = `ploom_stock_deduct_${p.id}`;
+    const deductedAmount = parseInt(localStorage.getItem(deductKey) || '0');
+    
+    // Default to 10 if stock isn't explicitly set in your JSON
+    const originalStock = typeof p.stock === 'number' ? p.stock : 10;
+    let currentStock = originalStock - deductedAmount;
+
+    // AUTO-RESET: If stock hits 0 (or below), wipe the memory and reset to original
+    if (currentStock <= 0) {
+      currentStock = originalStock;
+      localStorage.removeItem(deductKey);
+    }
+
+    // Return the product with the newly calculated live stock
+    return { ...p, stock: currentStock };
+  });
 }
 
 async function loadCategories() {
   if (_categories) return _categories;
   
-  // Try multiple fallback paths to ensure it resolves on GitHub Pages subfolders and local dev
   const pathsToTry = [
     CONFIG?.DATA?.categories,
     resolvePath('data/categories.json'),
@@ -43,12 +63,20 @@ async function loadCategories() {
       // Continue to next fallback path
     }
   }
-
-  console.error('Error loading categories: All fallback paths failed.');
   return [];
 }
 
 export const products = {
+  
+  // NEW: Method to record a stock deduction when a purchase happens
+  reduceStock(cartItems) {
+    cartItems.forEach(item => {
+      const key = `ploom_stock_deduct_${item.productId}`;
+      const currentDeducted = parseInt(localStorage.getItem(key) || '0');
+      localStorage.setItem(key, currentDeducted + item.quantity);
+    });
+  },
+
   async all() {
     return loadCatalog();
   },
