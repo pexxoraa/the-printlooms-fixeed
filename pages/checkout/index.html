@@ -5,17 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Checkout — The Print Loom</title>
 <meta name="description" content="Complete your guest checkout at The Print Loom.">
-<link rel="canonical" href="https://pexxoraa.github.io/theprintlooms/pages/checkout/index.html">
+<link rel="canonical" href="https://pexxoraa.github.io/the-printlooms-fixeed/pages/checkout/index.html">
 <meta name="robots" content="noindex">
 
 <!-- Base URL for GitHub Pages subfolder routing -->
 <script>
   // Compute the correct <base> dynamically so the site works when served
   // from the domain root (local dev server, custom domain) AND when served
-  // from a GitHub Pages *project* subfolder (username.github.io/theprintlooms/).
+  // from a GitHub Pages *project* subfolder.
   (function () {
     var path = window.location.pathname;
-    var base = /^\/theprintlooms(\/|$)/.test(path) ? '/theprintlooms/' : '/';
+    var base = /^\/the-printlooms-fixeed(\/|$)/.test(path) ? '/the-printlooms-fixeed/' : '/';
     document.write('<base href="' + base + '">');
   })();
 </script>
@@ -393,7 +393,11 @@
       }
     });
 
-    try { await initApp(); } catch (e) { console.warn('App init failed', e); }
+    try {
+      await initApp();
+    } catch (e) {
+      console.warn('App init failed', e);
+    }
 
     document.getElementById('breadcrumb-home').setAttribute('href', CONFIG.ROUTES.home);
     document.getElementById('breadcrumb-cart').setAttribute('href', CONFIG.ROUTES.cart);
@@ -416,5 +420,6 @@
 
   init();
 </script>
+
 </body>
 </html>
