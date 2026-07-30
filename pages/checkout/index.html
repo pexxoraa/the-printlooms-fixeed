@@ -169,8 +169,6 @@
   import { validators } from './js/services/validation.js';
   import { showToast } from './js/components/toast.js';
   import { router } from './js/router.js';
-  
-  // NEW: Import the products module so we can reduce stock!
   import { products } from './js/services/products.js';
 
   let currentTotals = null;
@@ -367,12 +365,11 @@
 
       try {
         const orderDraft = await checkout.buildOrderDraft(customerDetails);
-        
-        // Push order to Google Sheets
         const result = await payment.payWithUpi(orderDraft, upiRef);
 
-        // NEW: Deduct the stock of the purchased items instantly!
-        products.reduceStock(orderDraft.items);
+        // FIX: Grab the actual cart lines here to ensure we have the Product ID!
+        const cartLines = await cart.hydrate();
+        products.reduceStock(cartLines);
 
         await cart.clear();
         checkout.clearDraft();
