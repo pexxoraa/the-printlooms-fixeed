@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Order Confirmed — The Print Loom</title>
+<meta name="description" content="Thank you for your order at The Print Loom.">
+<link rel="canonical" href="https://pexxoraa.github.io/theprintlooms/pages/checkout/index.html">
+
+<!-- Base URL for GitHub Pages subfolder routing -->
+<script>
+  // Compute the correct <base> dynamically so the site works when served
+  // from the domain root (local dev server, custom domain) AND when served
+  // from a GitHub Pages *project* subfolder (username.github.io/theprintlooms/).
+  (function () {
+    var path = window.location.pathname;
+    var base = /^\/theprintlooms(\/|$)/.test(path) ? '/theprintlooms/' : '/';
+    document.write('<base href="' + base + '">');
+  })();
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/variables.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/pages.css">
+<link rel="stylesheet" href="css/animations.css">
+<link rel="stylesheet" href="css/utilities.css">
+</head>
+<body>
+
+<div id="site-header"></div>
+
+<main id="main-content" class="page-main">
+  <div class="container" style="max-width: 680px; margin: 0 auto; padding: var(--space-8) var(--space-4);">
+    
+    <div class="card text-center" style="padding: var(--space-8); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); background: #ffffff;">
+      
+      <!-- SUCCESS ICON -->
+      <div style="width: 72px; height: 72px; background: #E8F5E9; color: #2E7D32; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; margin: 0 auto var(--space-4);">
+        ✓
+      </div>
+
+      <h1 style="font-family: var(--font-display); font-size: 2rem; color: var(--color-ink); margin-bottom: var(--space-2);">
+        Order Placed Successfully!
+      </h1>
+      <p class="text-soft" style="font-size: 1rem; margin-bottom: var(--space-6);">
+        Thank you for shopping with The Print Loom. Your order has been recorded and is currently pending UPI payment verification.
+      </p>
+
+      <!-- ORDER DETAILS CARD -->
+      <div style="background: var(--color-ivory); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-5); text-align: left; margin-bottom: var(--space-6);">
+        
+        <div class="row-between mb-3" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed var(--color-border); padding-bottom: var(--space-3);">
+          <span class="text-faint" style="font-size: 0.9rem;">Order Reference</span>
+          <strong id="display-order-id" style="font-size: 1.05rem; letter-spacing: 0.5px;">-</strong>
+        </div>
+
+        <div class="row-between mb-3" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed var(--color-border); padding-bottom: var(--space-3);">
+          <span class="text-faint" style="font-size: 0.9rem;">Total Paid via UPI</span>
+          <strong id="display-order-amount" style="font-size: 1.1rem; color: var(--color-maroon);">-</strong>
+        </div>
+
+        <div class="row-between mb-3" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed var(--color-border); padding-bottom: var(--space-3);">
+          <span class="text-faint" style="font-size: 0.9rem;">Payment Status</span>
+          <span class="badge" style="background: #FFF3E0; color: #E65100; padding: 4px 10px; border-radius: 12px; font-size: 0.82rem; font-weight: 600;">
+            Pending Verification
+          </span>
+        </div>
+
+        <div class="row-between" style="display: flex; justify-content: space-between; align-items: center;">
+          <span class="text-faint" style="font-size: 0.9rem;">Fulfilment</span>
+          <span class="badge" style="background: #E3F2FD; color: #1565C0; padding: 4px 10px; border-radius: 12px; font-size: 0.82rem; font-weight: 600;">
+            Processing Order
+          </span>
+        </div>
+
+      </div>
+
+      <!-- WHAT HAPPENS NEXT -->
+      <div style="text-align: left; background: #F8F9FA; border-left: 4px solid var(--color-maroon); padding: var(--space-4) var(--space-5); border-radius: var(--radius-sm); margin-bottom: var(--space-6);">
+        <h4 style="font-size: 0.95rem; margin-bottom: var(--space-2); color: var(--color-ink);">What happens next?</h4>
+        <p class="text-soft" style="font-size: 0.88rem; line-height: 1.5; margin: 0;">
+          We will verify your UPI Reference/UTR number against our bank statement. Once confirmed, your saree will be dispatched and tracking details will be sent via WhatsApp/Email.
+        </p>
+      </div>
+
+      <!-- ACTION BUTTONS -->
+      <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+        <a href="index.html" class="btn btn-outline">Back to Home</a>
+        <a href="pages/collections/index.html" class="btn btn-primary">Continue Shopping</a>
+      </div>
+
+    </div>
+
+  </div>
+</main>
+
+<div id="site-footer"></div>
+
+<script type="module">
+  import { initApp } from './js/app.js';
+  import { CONFIG } from './js/services/config.js';
+  import { storage } from './js/services/storage.js';
+
+  function currency(n) {
+    const symbol = CONFIG.BUSINESS?.currency || '₹';
+    const num = Number(n) || 0;
+    return `${symbol}${Math.round(num).toLocaleString('en-IN')}`;
+  }
+
+  async function init() {
+    try {
+      await initApp();
+    } catch(e) {
+      console.warn("App initialization warning:", e);
+    }
+
+    // 1. Read parameters directly from URL query string
+    const params = new URLSearchParams(window.location.search);
+    let amount = params.get('amount');
+    let orderId = params.get('orderId');
+
+    // 2. Fallback to LocalStorage if query params are missing
+    if (!orderId || !amount) {
+      const lastOrder = storage?.get ? storage.get(CONFIG.STORAGE_KEYS?.lastOrder || 'lastOrder') : null;
+      if (lastOrder) {
+        orderId = orderId || lastOrder.orderId;
+        amount = amount || lastOrder.grandTotal;
+      }
+    }
+
+    // 3. Update DOM elements specifically without touching parent containers
+    const orderIdEl = document.getElementById('display-order-id');
+    const amountEl = document.getElementById('display-order-amount');
+
+    if (orderIdEl) {
+      orderIdEl.textContent = orderId || ('ORD-' + Math.floor(100000 + Math.random() * 900000));
+    }
+
+    if (amountEl) {
+      amountEl.textContent = amount ? currency(amount) : currency(0);
+    }
+  }
+
+  window.addEventListener('DOMContentLoaded', init);
+</script>
+
+</body>
+</html>

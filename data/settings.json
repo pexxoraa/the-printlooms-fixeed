@@ -1,0 +1,36 @@
+{
+  "brand": {
+    "name": "The Print Loom",
+    "tagline": "Digital Print Sarees",
+    "logo": "assets/images/brand/logo.png",
+    "supportPhone": "+91 90306 21457",
+    "supportWhatsapp": "919030621457",
+    "supportEmail": "theprintlooms@gmail.com",
+    "address": "India"
+  },
+  "social": {
+    "instagram": "https://instagram.com/the_print_loom",
+    "instagramHandle": "@the_print_loom"
+  },
+  "shipping": {
+    "freeShippingThreshold": 2599,
+    "flatRate": 79,
+    "codAvailable": true,
+    "estimatedDeliveryDays": "3-7"
+  },
+  "coupons": [
+    { "code": "WELCOME10", "type": "percent", "value": 10, "minOrder": 999 },
+    { "code": "FLAT200", "type": "flat", "value": 200, "minOrder": 2500 }
+  ],
+  "payment": {
+    "method": "upi",
+    "upiId": "pexxoraa@axl",
+    "upiPayeeName": "pexxoraa",
+    "note": "No payment gateway. Customers pay directly via any UPI app; orders are marked 'Pending Verification' until manually confirmed against your bank/UPI statement."
+  },
+  "seo": {
+    "defaultTitle": "The Print Loom — Digital Print Sarees",
+    "defaultDescription": "Shop premium digital print sarees from The Print Loom — silk, georgette, linen, organza and cotton, crafted for the modern Indian woman.",
+    "siteUrl": "https://theprintloom.example.com"
+  }
+}
