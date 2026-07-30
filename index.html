@@ -5,16 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Print Loom — Premium Digital Print Sarees</title>
 <meta name="description" content="Shop premium digital print sarees — silk, georgette, linen, organza and cotton — crafted for the modern Indian woman. Guest checkout, pay directly via UPI.">
-<link rel="canonical" href="https://pexxoraa.github.io/theprintlooms/">
+<link rel="canonical" href="https://pexxoraa.github.io/the-printlooms-fixeed/">
 
 <!-- Base URL for GitHub Pages subfolder routing -->
 <script>
-  // Compute the correct <base> dynamically so the site works when served
-  // from the domain root (local dev server, custom domain) AND when served
-  // from a GitHub Pages *project* subfolder (username.github.io/theprintlooms/).
+  // Compute the correct <base> dynamically for local dev vs GitHub Pages project subfolder
   (function () {
     var path = window.location.pathname;
-    var base = /^\/theprintlooms(\/|$)/.test(path) ? '/theprintlooms/' : '/';
+    var base = /^\/the-printlooms-fixeed(\/|$)/.test(path) ? '/the-printlooms-fixeed/' : '/';
     document.write('<base href="' + base + '">');
   })();
 </script>
@@ -24,7 +22,7 @@
 <meta property="og:title" content="The Print Loom — Premium Digital Print Sarees">
 <meta property="og:description" content="Handloom soul, digital precision. Shop the new festive edit.">
 <meta property="og:image" content="assets/images/products/magenta-teal-cow-lotus-saree.jpg">
-<meta property="og:url" content="https://pexxoraa.github.io/theprintlooms/">
+<meta property="og:url" content="https://pexxoraa.github.io/the-printlooms-fixeed/">
 
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image">
@@ -39,7 +37,7 @@
   "@type": "ClothingStore",
   "name": "The Print Loom",
   "description": "Premium digital print saree brand.",
-  "url": "https://pexxoraa.github.io/theprintlooms/"
+  "url": "https://pexxoraa.github.io/the-printlooms-fixeed/"
 }
 </script>
 
@@ -310,10 +308,9 @@
     if (!container) return;
     
     container.innerHTML = cats.map((c) => {
-      // Clean leading dots/slashes so base href handles it cleanly
       let imgPath = c.image ? c.image.replace(/^(\.\/|\/)+/, '') : '';
-      if (imgPath.startsWith('theprintlooms/')) {
-        imgPath = imgPath.replace(/^theprintlooms\//, '');
+      if (imgPath.startsWith('the-printlooms-fixeed/')) {
+        imgPath = imgPath.replace(/^the-printlooms-fixeed\//, '');
       }
 
       return `
