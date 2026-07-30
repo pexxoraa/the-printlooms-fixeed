@@ -22,12 +22,13 @@ async function loadCatalog() {
 async function loadCategories() {
   if (_categories) return _categories;
   try {
-    // Uses centralized CONFIG path or fallback resolver to prevent subfolder 404s
     const categoriesUrl = CONFIG?.DATA?.categories || resolvePath('data/categories.json');
     const res = await fetch(categoriesUrl);
-    if (!res.ok) throw new Error(`HTTP error ${res.status}`);
+    if (!res.ok) throw new Error(`HTTP error ${res.status} at ${categoriesUrl}`);
     const json = await res.json();
-    _categories = json.categories || [];
+    
+    // Safely support both direct arrays and object wrappers (e.g. { categories: [...] })
+    _categories = Array.isArray(json) ? json : (json.categories || []);
     return _categories;
   } catch (err) {
     console.error('Error loading categories:', err);
