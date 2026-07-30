@@ -1,82 +1,91 @@
 /**
  * validation.js
  * ----------------------------------------------------------------------------
- * Small, dependency-free validators. Each returns null when valid, or a
- * human-readable error string when invalid — designed to plug straight into
- * a .form-error element next to any field.
+ * Shared form validation schemas and helper functions.
  * ----------------------------------------------------------------------------
  */
 
 export const validators = {
-  required(value, label = 'This field') {
-    if (value === undefined || value === null || String(value).trim() === '') {
-      return `${label} is required.`;
+  name: (val) => {
+    if (!val || val.trim().length < 2) return 'Please enter your full name.';
+    return null;
+  },
+  
+  phone: (val) => {
+    if (!val) return 'Phone number is required.';
+    
+    // Clean the input: remove spaces, dashes, and parentheses
+    const cleaned = val.replace(/[\s\-\(\)]/g, '');
+    
+    // Regex for Indian mobile numbers:
+    // Optional +91, 91, or 0 at the start, followed by a 10-digit number starting with 6-9.
+    const phoneRegex = /^(?:(?:\+|0{0,2})91|[0]?)?[6789]\d{9}$/;
+    
+    if (!phoneRegex.test(cleaned)) {
+      return 'Enter a valid mobile number (e.g., 9876543210 or +91...).';
     }
     return null;
   },
-
-  name(value) {
-    if (!value || value.trim().length < 2) return 'Please enter your full name.';
-    if (!/^[a-zA-Z\s.'-]+$/.test(value)) return 'Name can only contain letters.';
+  
+  email: (val) => {
+    if (!val) return 'Email is required.';
+    // Standard email validation regex
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(val.trim())) return 'Enter a valid email address.';
     return null;
   },
-
-  phone(value) {
-    const digits = (value || '').replace(/\D/g, '');
-    if (digits.length !== 10) return 'Enter a valid 10-digit mobile number.';
-    if (!/^[6-9]/.test(digits)) return 'Enter a valid Indian mobile number.';
+  
+  address: (val) => {
+    if (!val || val.trim().length < 5) return 'Please enter your full delivery address.';
     return null;
   },
-
-  email(value) {
-    if (!value) return 'Email is required.';
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!re.test(value)) return 'Enter a valid email address.';
+  
+  city: (val) => {
+    if (!val || val.trim().length < 2) return 'Please enter your city.';
     return null;
   },
-
-  pincode(value) {
-    if (!/^\d{6}$/.test(value || '')) return 'Enter a valid 6-digit pincode.';
+  
+  state: (val) => {
+    if (!val || val.trim().length < 2) return 'Please enter your state.';
     return null;
   },
-
-  address(value) {
-    if (!value || value.trim().length < 8) return 'Please enter your complete address.';
+  
+  pincode: (val) => {
+    if (!val) return 'Pincode is required.';
+    // 6-digit Indian PIN code regex
+    const pinRegex = /^[1-9][0-9]{5}$/;
+    if (!pinRegex.test(val.trim())) return 'Enter a valid 6-digit pincode.';
     return null;
   },
-
-  city(value) {
-    if (!value || value.trim().length < 2) return 'Please enter your city.';
+  
+  upiReference: (val) => {
+    if (!val || val.trim().length < 8) return 'Please enter a valid UPI reference/UTR number.';
     return null;
   },
-
-  state(value) {
-    if (!value || value.trim().length < 2) return 'Please select your state.';
+  
+  minLength: (val, length, fieldName) => {
+    if (!val || val.trim().length < length) return `${fieldName} must be at least ${length} characters.`;
     return null;
-  },
-
-  minLength(value, min, label = 'This field') {
-    if (!value || value.trim().length < min) return `${label} must be at least ${min} characters.`;
-    return null;
-  },
-
-  upiReference(value) {
-    const v = (value || '').trim();
-    if (!v) return 'Enter the UPI reference / UTR number shown in your payment app after paying.';
-    if (!/^[a-zA-Z0-9]{6,25}$/.test(v)) return 'That doesn\'t look like a valid reference number (6-25 letters/numbers).';
-    return null;
-  },
+  }
 };
 
 /**
- * Validate a form object against a schema of { field: validatorFn }.
- * Returns { valid: boolean, errors: { field: message } }.
+ * Validates a data object against a given schema.
+ * @param {Object} data - The form data object to validate.
+ * @param {Object} schema - The schema object mapping fields to validator functions.
+ * @returns {Object} { valid: boolean, errors: Object }
  */
 export function validateForm(data, schema) {
+  let valid = true;
   const errors = {};
-  Object.entries(schema).forEach(([field, validatorFn]) => {
-    const message = validatorFn(data[field]);
-    if (message) errors[field] = message;
+  
+  Object.entries(schema).forEach(([field, validator]) => {
+    const err = typeof validator === 'function' ? validator(data[field]) : null;
+    if (err) {
+      valid = false;
+      errors[field] = err;
+    }
   });
-  return { valid: Object.keys(errors).length === 0, errors };
+  
+  return { valid, errors };
 }
