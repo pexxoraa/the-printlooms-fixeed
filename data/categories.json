@@ -1,0 +1,46 @@
+{
+  "categories": [
+    {
+      "id": "cat-power-looms",
+      "name": "Power Looms",
+      "slug": "power-looms",
+      "image": "assets/images/products/red-blue-lotus-saree.jpg",
+      "description": "Precision-engineered power loom sarees featuring vibrant, durable digital prints with sharp motif definition."
+    },
+    {
+      "id": "cat-handlooms",
+      "name": "Handlooms",
+      "slug": "handlooms",
+      "image": "assets/images/products/purple-pink-leaf-saree.jpg",
+      "description": "Authentic hand-woven traditional textiles crafted with rich textures and timeless heritage appeal."
+    },
+    {
+      "id": "cat-silk",
+      "name": "Digital Silk Sarees",
+      "slug": "digital-silk-sarees",
+      "image": "assets/images/products/magenta-cream-lotus-saree.jpg",
+      "description": "Luxurious silk drapes with deep-penetration digital prints and rich festive sheens."
+    },
+    {
+      "id": "cat-linen",
+      "name": "Linen Sarees",
+      "slug": "linen-sarees",
+      "image": "assets/images/products/rust-cream-floral-saree.jpg",
+      "description": "Breathable everyday wear crafted with eco-friendly reactive inks."
+    },
+    {
+      "id": "cat-cotton",
+      "name": "Cotton Sarees",
+      "slug": "cotton-sarees",
+      "image": "assets/images/products/olive-peach-rose-saree.jpg",
+      "description": "Soft plant-fiber fabrics combined with fade-resistant, vibrant color lines."
+    },
+    {
+      "id": "cat-bridal",
+      "name": "Bridal Edit",
+      "slug": "bridal-edit",
+      "image": "assets/images/products/magenta-teal-cow-lotus-saree.jpg",
+      "description": "Couture-atelier masterpieces designed for grand celebrations and weddings."
+    }
+  ]
+}
