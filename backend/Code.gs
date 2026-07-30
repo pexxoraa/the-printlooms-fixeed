@@ -31,7 +31,7 @@
 
 const ORDER_HEADERS = [
   'Order ID', 'Date', 'Time', 'Customer Name', 'Phone', 'Email', 'Address',
-  'City', 'State', 'Pincode', 'Products', 'Quantity', 'Subtotal',
+  'City', 'State', 'Pincode', 'Order Notes', 'Products', 'Quantity', 'Subtotal',
   'Shipping Charges', 'Discount', 'Grand Total', 'Payment Method',
   'UPI Reference', 'Payment Status', 'Order Status',
 ];
@@ -113,6 +113,8 @@ function getOrCreateSheet_(name, headers) {
   if (!sheet) {
     sheet = ss.insertSheet(name);
     sheet.appendRow(headers);
+    // Make the header row bold
+    sheet.getRange(1, 1, 1, headers.length).setFontWeight('bold');
   }
   return sheet;
 }
@@ -180,23 +182,25 @@ function appendOrderRow_(orderDraft, orderId) {
     .join(', ');
   const totalQty = orderDraft.items.reduce((s, i) => s + i.quantity, 0);
 
+  // Ensure this exact order perfectly matches ORDER_HEADERS array above
   sheet.appendRow([
     orderId,
     Utilities.formatDate(now, Session.getScriptTimeZone() || 'Asia/Kolkata', 'yyyy-MM-dd'),
     Utilities.formatDate(now, Session.getScriptTimeZone() || 'Asia/Kolkata', 'HH:mm:ss'),
-    orderDraft.customer.name,
-    orderDraft.customer.phone,
-    orderDraft.customer.email,
-    orderDraft.customer.address,
-    orderDraft.customer.city,
-    orderDraft.customer.state,
-    orderDraft.customer.pincode,
+    orderDraft.customer.name || '',
+    orderDraft.customer.phone || '',
+    orderDraft.customer.email || '',
+    orderDraft.customer.address || '',
+    orderDraft.customer.city || '',
+    orderDraft.customer.state || '',
+    orderDraft.customer.pincode || '',
+    orderDraft.customer.notes || '', // Properly maps to 'Order Notes'
     productsSummary,
     totalQty,
-    orderDraft.subtotal,
-    orderDraft.shipping,
-    orderDraft.discount,
-    orderDraft.grandTotal,
+    orderDraft.subtotal || 0,
+    orderDraft.shipping || 0,
+    orderDraft.discount || 0,
+    orderDraft.grandTotal || 0,
     'UPI (Direct)',
     orderDraft.upiReference || '',
     'Pending Verification',
@@ -237,10 +241,12 @@ function sendWhatsAppNotification_(orderDraft, orderId) {
       .map((i) => `• ${i.name} (${i.size}) x${i.quantity}`)
       .join('\n');
 
+    const notesLine = orderDraft.customer.notes ? `\nNotes: ${orderDraft.customer.notes}` : '';
+
     const message = [
       `*New Order — ${orderId}* (Pending Verification)`,
       `Customer: ${orderDraft.customer.name}`,
-      `Phone: ${orderDraft.customer.phone}`,
+      `Phone: ${orderDraft.customer.phone}${notesLine}`,
       ``,
       `Products:`,
       productsSummary,
