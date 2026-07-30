@@ -9,7 +9,6 @@ let _cache = null;
 let _categories = null;
 
 async function loadCatalog() {
-  // Only fetch from the API/JSON once
   if (!_cache) {
     try {
       _cache = await api.getProducts();
@@ -23,7 +22,7 @@ async function loadCatalog() {
   // INTERCEPTOR: Dynamically reduce stock based on local purchases
   return _cache.map(p => {
     const deductKey = `ploom_stock_deduct_${p.id}`;
-    const deductedAmount = parseInt(localStorage.getItem(deductKey) || '0');
+    const deductedAmount = parseInt(localStorage.getItem(deductKey) || '0', 10);
     
     // Default to 10 if stock isn't explicitly set in your JSON
     const originalStock = typeof p.stock === 'number' ? p.stock : 10;
@@ -35,7 +34,6 @@ async function loadCatalog() {
       localStorage.removeItem(deductKey);
     }
 
-    // Return the product with the newly calculated live stock
     return { ...p, stock: currentStock };
   });
 }
@@ -68,12 +66,18 @@ async function loadCategories() {
 
 export const products = {
   
-  // NEW: Method to record a stock deduction when a purchase happens
-  reduceStock(cartItems) {
-    cartItems.forEach(item => {
-      const key = `ploom_stock_deduct_${item.productId}`;
-      const currentDeducted = parseInt(localStorage.getItem(key) || '0');
-      localStorage.setItem(key, currentDeducted + item.quantity);
+  // NEW: Bulletproof stock reduction using the raw cart lines
+  reduceStock(cartLines) {
+    if (!cartLines || !Array.isArray(cartLines)) return;
+    
+    cartLines.forEach(line => {
+      // Safely extract the ID whether it's a cart line or an order draft item
+      const pId = line.productId || (line.product && line.product.id) || line.id;
+      if (!pId) return; // Skip if no ID is found
+      
+      const key = `ploom_stock_deduct_${pId}`;
+      const currentDeducted = parseInt(localStorage.getItem(key) || '0', 10);
+      localStorage.setItem(key, currentDeducted + (line.quantity || 1));
     });
   },
 
