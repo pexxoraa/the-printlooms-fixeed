@@ -6,7 +6,7 @@
  */
 
 // Dynamically prefix paths with repo name if running on GitHub Pages subfolder
-const BASE_PATH = window.location.pathname.includes('/the-printlooms-fixeed') ? '/the-printlooms-fixeed' : '';
+const BASE_PATH = window.location.pathname.includes('/theprintloom') ? '/theprintloom' : '';
 
 /** Helper to convert any relative path into a GitHub Pages safe absolute path */
 export function resolvePath(path = '') {
@@ -23,7 +23,7 @@ export const CONFIG = Object.freeze({
 
   API: {
     gasBaseUrl: 'https://script.google.com/macros/s/AKfycbyc8CE7Rm-EsLYdgxHfWqGmXnWE6PcnvRoFxNHpYQwEuwa0g1Ub8JCEVvLPiPD_wvWQ/exec',
-    nodeBaseUrl: 'https://pexxoraa.github.io/the-printlooms-fixeed',
+    nodeBaseUrl: 'https://pexxoraa.github.io/theprintloom',
     timeoutMs: 15000,
   },
 
