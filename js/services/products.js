@@ -44,7 +44,7 @@ async function loadCategories() {
   const pathsToTry = [
     CONFIG?.DATA?.categories,
     resolvePath('data/categories.json'),
-    '/the-printlooms-fixeed/data/categories.json',
+    '/theprintloom/data/categories.json',
     './data/categories.json',
     'data/categories.json'
   ].filter(Boolean);
