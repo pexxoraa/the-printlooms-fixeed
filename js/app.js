@@ -95,7 +95,7 @@ async function initWhatsAppButton() {
     /* falls back safely below if API fails */ 
   }
   
-  const whatsapp = settings?.brand?.supportWhatsapp || '919030621467';
+  const whatsapp = settings?.brand?.supportWhatsapp || '919030621457';
   const message = encodeURIComponent('Hi! I would like to place an order from The Print Loom.');
   const link = `https://wa.me/${whatsapp}?text=${message}`;
 
