@@ -64,7 +64,12 @@ export async function renderNavbar(root) {
         </nav>
 
         <div class="nav-actions">
-          <button class="btn-icon" id="nav-search-toggle" aria-label="Search">⚲</button>
+          <button class="btn-icon" id="nav-search-toggle" aria-label="Search">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </button>
           <button class="btn-icon" id="nav-theme-toggle" aria-label="Toggle dark mode">☾</button>
           <a class="btn-icon" href="${CONFIG.ROUTES.wishlist}" aria-label="Wishlist" style="position:relative;">
             ♡ <span id="wishlist-count" class="tag" style="position:absolute;top:-6px;right:-6px;background:var(--color-maroon);color:#fff;min-width:18px;height:18px;font-size:10px;display:flex;align-items:center;justify-content:center;padding:0;">0</span>
