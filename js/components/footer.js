@@ -20,7 +20,7 @@ export async function renderFooter(root) {
   
   const instagram = settings?.social?.instagram || 'https://instagram.com/the_print_loom';
   const instagramHandle = settings?.social?.instagramHandle || '@the_print_loom';
-  const whatsapp = settings?.brand?.supportWhatsapp || '919030621467';
+  const whatsapp = settings?.brand?.supportWhatsapp || '919030621457';
   const whatsappLink = `https://wa.me/${whatsapp}?text=${encodeURIComponent('Hi! I would like to place an order from The Print Loom.')}`;
 
   root.innerHTML = `
