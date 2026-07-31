@@ -19,7 +19,7 @@ import { storage } from '../services/storage.js';
 import { api } from '../services/api.js';
 
 // Resolve repo base path for subfolder hosting on GitHub Pages (matching repository name)
-const BASE_PATH = window.location.pathname.includes('/the-printlooms-fixeed') ? '/the-printlooms-fixeed' : '';
+const BASE_PATH = window.location.pathname.includes('/theprintloom') ? '/theprintlooms' : '';
 
 function resolveImagePath(path) {
   if (!path) return '';
